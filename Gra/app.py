@@ -101,7 +101,6 @@ def walka():
     session["log_walki"] = []
     session["walka"] = {"gracz": gracz, "potwor": potwor}
     session["tlo_walki"] = tlo_walki
-    session["w_trakcie_walki"] = True
 
     return redirect(url_for("walka"))
 
@@ -150,7 +149,6 @@ def atak():
         pokonaj_potwora(potwor["nazwa"])
 
         session.pop('walka', None)
-        session['w_trakcie_walki'] = False
         session['po_walce'] = True
         session.pop("tlo_walki", None)
 
@@ -161,8 +159,6 @@ def atak():
         session["log_walki"].append("Zostałeś pokonany...")
         return redirect(url_for('gra', zakladka='odpoczynek'))
         session.pop("tlo_walki", None)
-        session["w_trakcie_walki"] = False
-
 
     return redirect(url_for('walka'))
 
@@ -228,6 +224,8 @@ def gra():
 @app.route('/move/<cel>')
 def move(cel):
     from encounters import losowe_wydarzenie
+    print("W TRAKCIE WALKI:", session.get("w_trakcie_walki"))
+
 
     if losowe_wydarzenie() == "walka":
         return redirect(url_for("walka"))
@@ -293,10 +291,11 @@ def move(cel):
     if session.pop("po_walce", False):
         return redirect(url_for('gra', zakladka='mapa'))
 
-    # LOSOWA WALKA
-    if not session.get("w_trakcie_walki", False):
-        if random.random() < 0.4:  # 35% szansy
+    # LOSOWE SPOTKANIE
+    if "walka" not in session:
+        if random.random() < 0.4:
             return redirect(url_for("walka"))
+
 
     # jeśli NIE było walki → wracamy do mapy
     return redirect(url_for('gra', zakladka='mapa'))
