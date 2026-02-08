@@ -141,6 +141,8 @@ def atak():
             if random.random() <= item.get("szansa", 1):
                 nazwa = item["nazwa"]
                 global_plecak[nazwa] = global_plecak.get(nazwa, 0) + 1
+                session.pop("tlo_walki", None)
+                session["w_trakcie_walki"] = False
 
 
         # 🧠 BESTIARIUSZ
@@ -158,6 +160,9 @@ def atak():
         session.pop('walka')
         session["log_walki"].append("Zostałeś pokonany...")
         return redirect(url_for('gra', zakladka='odpoczynek'))
+        session.pop("tlo_walki", None)
+        session["w_trakcie_walki"] = False
+
 
     return redirect(url_for('walka'))
 
@@ -276,6 +281,11 @@ def move(cel):
                 }
             }
 
+            session["tlo_walki"] = mapa_swiata["Stary Most"].get(
+                "tlo_walki", "default.jpg"
+            )
+
+            session["w_trakcie_walki"] = True
             return redirect(url_for("walka"))
 
 
@@ -285,7 +295,7 @@ def move(cel):
 
     # LOSOWA WALKA
     if not session.get("w_trakcie_walki", False):
-        if random.random() < 0.35:  # 35% szansy
+        if random.random() < 0.4:  # 35% szansy
             return redirect(url_for("walka"))
 
     # jeśli NIE było walki → wracamy do mapy
