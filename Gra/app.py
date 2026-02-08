@@ -69,6 +69,10 @@ def walka():
             komunikat=None
         )
 
+    if not potwor or "hp" not in potwor:
+        session.pop("walka", None)
+        return redirect(url_for("gra", zakladka="mapa"))
+
     # Brak sił
     if player_stats["energia"] <= 0 or player_stats["hp"] <= 0:
         return redirect(url_for("gra", zakladka="mapa"))
@@ -223,12 +227,17 @@ def gra():
 # -------------------------------
 @app.route('/move/<cel>')
 def move(cel):
-    from encounters import losowe_wydarzenie
+    from encounters import losowe_wydarzenie, losuj_potwora
+    lokacja = player_stats["lokalizacja"]
     print("W TRAKCIE WALKI:", session.get("w_trakcie_walki"))
+    print("LOKACJA:", lokacja)
+    print("WROGOWIE LOKACJI:", mapa_swiata[lokacja].get("wrogowie", {}))
+    print("WYLOSOWANA NAZWA:", nazwa)
+    print("POTWORY KEYS:", potwory.keys())
 
-
-    if losowe_wydarzenie() == "walka":
-        return redirect(url_for("walka"))
+    if not nazwa or nazwa not in potwory:
+        print("BŁĄD: potwór nie istnieje:", nazwa)
+        return redirect(url_for('gra', zakladka='mapa'))
 
     if player_stats["energia"] <= 0 or player_stats["hp"] <= 0:
         return redirect(url_for('gra', zakladka='mapa'))
@@ -291,11 +300,37 @@ def move(cel):
     if session.pop("po_walce", False):
         return redirect(url_for('gra', zakladka='mapa'))
 
-    # LOSOWE SPOTKANIE
-    if "walka" not in session:
-        if random.random() < 0.4:
-            return redirect(url_for("walka"))
+    from encounters import losowe_wydarzenie, losuj_potwora
 
+    # LOSOWE SPOTKANIE PO RUCHU
+    wydarzenie = losowe_wydarzenie()
+
+    if wydarzenie == "walka" and "walka" not in session:
+        wrogowie = mapa_swiata[lokacja].get("wrogowie", {})
+        print("WROGOWIE:", wrogowie)
+
+        nazwa = losuj_potwora(wrogowie)
+        print("WYLOSOWANY POTWÓR:", nazwa)
+
+        if not nazwa or nazwa not in potwory:
+            print("❌ BŁĄD: potwór nie istnieje:", nazwa)
+            return redirect(url_for('gra', zakladka='mapa'))
+
+            session["walka"] = {
+                "potwor": potwory[nazwa].copy(),
+                "gracz": {
+                    "hp": player_stats["hp"],
+                    "atak": 10 + player_stats["attributes"]["Siła"],
+                    "obrona": 5 + player_stats["attributes"]["Zręczność"]
+                }
+            }
+
+            session["tlo_walki"] = mapa_swiata[lokacja].get(
+                "tlo_walki", "default.jpg"
+            )
+
+            session["w_trakcie_walki"] = True
+            return redirect(url_for("walka"))
 
     # jeśli NIE było walki → wracamy do mapy
     return redirect(url_for('gra', zakladka='mapa'))
