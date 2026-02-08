@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ikon.css') }}">
+    <meta charset="UTF-8">
+    <title>Gra RPG</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 0; background: #222; color: #fff; }
+        .header { background: #333; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .stats { display: flex; gap: 10px; }
+        .stat { display: flex; flex-direction: column; width: 80px; }
+        .stat-label { font-size: 12px; text-align: center; margin-bottom: 2px; }
+        .stat-bar { background: #555; width: 100%; height: 12px; border-radius: 6px; overflow: hidden; }
+        .stat-bar-inner { height: 100%; }
+        .hp { background: linear-gradient(90deg, #ff4d4d, #ff0000); }
+        .mp { background: linear-gradient(90deg, #4d79ff, #0000ff); }
+        .energia { background: linear-gradient(90deg, #ffff66, #ffcc00); }
+        .exp { background: linear-gradient(90deg, #66ff66, #00cc00); }
+        .lokalizacja { font-size: 14px; align-self: center; }
+        .menu { margin-top: 10px; }
+        .menu a { color: #fff; margin-right: 10px; text-decoration: none; }
+        .menu a:hover { text-decoration: underline; }
+        .content { padding: 10px; }
+
+        /* Sloty */
+        .slots { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 20px; }
+        .slot { width: 50px; height: 50px; border: 1px solid #fff; display: flex; align-items: center; justify-content: center; background: #444; position: relative; }
+        .slot img { max-width: 40px; max-height: 40px; }
+
+        /* Tooltipy */
+        .slot:hover .tooltip { display: block; }
+        .tooltip {
+            display: none;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            color: #fff;
+            padding: 3px 6px;
+            border: 1px solid #fff;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+<div class="stat">
+    <span class="stat-label">HP</span>
+    <div class="stat-bar">
+        <div class="stat-bar-inner hp" style="width:{{ (hp / hp_max) * 100 }}%; background: linear-gradient(to right, #ff4d4d, #ff9999);"></div>
+    </div>
+    <span class="stat-text">{{ hp }}/{{ hp_max }}</span>
+</div>
+
+<div class="stat">
+    <span class="stat-label">MP</span>
+    <div class="stat-bar">
+        <div class="stat-bar-inner mp" style="width:{{ (mp / mp_max) * 100 }}%; background: linear-gradient(to right, #4d79ff, #99bbff);"></div>
+    </div>
+    <span class="stat-text">{{ mp }}/{{ mp_max }}</span>
+</div>
+
+<div class="stat">
+    <span class="stat-label">Energia</span>
+    <div class="stat-bar">
+        <div class="stat-bar-inner energia" style="width:{{ (energia / energia_max) * 100 }}%; background: linear-gradient(to right, #ffd11a, #fff299);"></div>
+    </div>
+    <span class="stat-text">{{ energia }}/{{ energia_max }}</span>
+</div>
+
+<div class="stat">
+    <span class="stat-label">EXP</span>
+    <div class="stat-bar">
+        <div class="stat-bar-inner exp" style="width:{{ (exp / exp_max) * 100 }}%; background: linear-gradient(to right, #33cc33, #99ff99);"></div>
+    </div>
+    <span class="stat-text">{{ exp }}/{{ exp_max }}</span>
+{% if zmeczenie %}
+    <div class="alert">{{ zmeczenie }}</div>
+{% endif %}
+
+</div>
+      
+</div>
+
+<div class="lokalizacja">
+    Lokalizacja: {{ lokalizacja }}
+</div>
+
+    </div>
+
+    <div class="menu">
+        <a href="/gra?zakladka=odpoczynek">Odpoczynek</a>
+        <a href="/gra?zakladka=plecak">Plecak</a>
+        <a href="/gra?zakladka=ekwipunek">Ekwipunek</a>
+        <a href="/gra?zakladka=statystyki">Statystyki</a>
+        <a href="/gra?zakladka=crafting">Crafting</a>
+        <a href="/gra?zakladka=mapa">Mapa</a>
+        <a href="/gra?zakladka=bestiariusz">Bestiariusz</a>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

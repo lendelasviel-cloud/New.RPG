@@ -1,0 +1,16 @@
+<div style="background:#333; padding:10px; border-left:1px solid #555;">
+    <h3>Statystyki</h3>
+    <ul style="list-style:none; padding:0;">
+        <li>HP: {{ hp }}</li>
+        <li>MP: {{ mp }}</li>
+        <li>Energia: {{ energia }}</li>
+        <li>EXP: {{ exp }}</li>
+    </ul>
+    <h4>Umiejętności i cechy:</h4>
+    <ul style="list-style:none; padding:0;">
+        {% for key, value in attributes.items() %}
+        <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+    </ul>
+    <p><b>Lokalizacja:</b> {{ lokalizacja }}</p>
+</div>

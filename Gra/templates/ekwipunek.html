@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Ekwipunek</h2>
+
+<h3>Sloty:</h3>
+<ul style="list-style:none; padding:0;">
+    {% for slot, item in ekwipunek.items() %}
+    <li><b>{{ slot }}:</b> 
+        {% if item %}
+            {{ item.nazwa }}
+            <form method="POST" action="/equip">
+                <input type="hidden" name="action" value="unequip">
+                <input type="hidden" name="slot" value="{{ slot }}">
+                <button type="submit">Zdejmij</button>
+            </form>
+        {% else %}
+            Pusty
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+<h3>Plecak:</h3>
+<ul style="list-style:none; padding:0;">
+    {% for przedmiot in plecak %}
+    <li>{{ przedmiot.nazwa }}
+        <form method="POST" action="/equip">
+            <input type="hidden" name="action" value="equip">
+            <input type="hidden" name="item_id" value="{{ przedmiot.id }}">
+            <button type="submit">Załóż</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

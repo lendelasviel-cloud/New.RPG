@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>Plecak</h2>
+
+<!-- Statystyki -->
+<div class="stats-panel" style="display:flex; gap:15px; margin-bottom:20px;">
+    <div class="stat">
+        <img src="/static/icons/hp.png" alt="HP" width="24">
+        HP: {{ hp }}
+    </div>
+    <div class="stat">
+        <img src="/static/icons/mp.png" alt="MP" width="24">
+        MP: {{ mp }}
+    </div>
+    <div class="stat">
+        <img src="/static/icons/energia.png" alt="Energia" width="24">
+        Energia: {{ energia }}
+    </div>
+    <div class="stat">
+        <img src="/static/icons/exp.png" alt="EXP" width="24">
+        EXP: {{ exp }}
+    </div>
+</div>
+
+<form method="post" action="{{ url_for('uzyj', item_id=id) }}">
+    <button>Użyj</button>
+</form>
+
+<!-- Sloty plecaka -->
+<div class="slots">
+    {% for item in items %}
+    <div class="slot">
+        {% if item.icon %}
+        <img src="/static/icons/{{ item.icon }}" alt="{{ item.name }}">
+        <div class="tooltip">{{ item.tooltip }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

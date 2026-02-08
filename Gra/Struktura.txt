@@ -1,0 +1,53 @@
+001
+rpg_game/
+│
+├─ app.py
+├─ postac.py
+├─ ekwipunek.py
+├─ lokacje.py
+├─ status.py
+├─ utils.py
+└─ templates/
+    ├─ layout.html
+    ├─ plecak.html
+    ├─ ekwipunek.html
+    ├─ crafting.html
+    ├─ lokacja.html
+    ├─ statystyki.html
+    └─ walka.html
+002
+gra_rpg/
+│
+├─ app.py
+├─ static/
+│   └─ style.css  # opcjonalnie do ogólnego stylu
+└─ templates/
+    ├─ layout.html
+    ├─ plecak.html
+    ├─ ekwipunek.html
+    ├─ crafting.html
+    ├─ statystyki.html
+    ├─ lokacja.html
+    └─ walka.html
+003
+Gra/
+│
+├── app.py
+├── stats.py              👈 statystyki gracza
+├── monsters.py           👈 definicje potworów
+├── bestiary.py           👈 odkryty bestiariusz
+│
+├── data/
+│   └── items.py
+│
+├── templates/
+│   ├── layout.html
+│   ├── odpoczynek.html
+│   ├── plecak.html
+│   ├── ekwipunek.html
+│   ├── statystyki.html
+│   ├── bestiariusz.html
+│   └── ...
+│
+└── static/
+    └── css/

@@ -1,0 +1,10 @@
+Jeżeli chcesz, mogę też zrobić bardziej “ładną” wizualnie wersję z:
+
+Paskami z gradientem
+
+Ikonkami przedmiotów w slotach
+
+Tooltipami po najechaniu
+
+Chcesz, żebym od razu przygotował taką wizualną wersję?
+

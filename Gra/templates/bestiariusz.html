@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Bestiariusz</h2>
+
+{% if bestiariusz %}
+    {% for id, potwor in bestiariusz.items() %}
+        <div class="monster-card">
+            <h3>{{ potwor.nazwa }}</h3>
+            <p>Pokonany: {{ potwor.pokonany }} razy</p>
+            <p>{{ potwor.opis }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Nie odkryto jeszcze żadnych potworów.</p>
+{% endif %}
+
+{% endblock %}

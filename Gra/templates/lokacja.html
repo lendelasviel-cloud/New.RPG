@@ -1,0 +1,21 @@
+<h2>Lokacja: {{ aktualna_lokacja }}</h2>
+<p>Zbieraj surowce:</p>
+<ul>
+{% for surowiec in lokacje[aktualna_lokacja] %}
+<li>{{ surowiec }}
+    <form method="post" style="display:inline">
+        <button name="akcja" value="zbierz:{{ surowiec }}">Zbierz</button>
+    </form>
+</li>
+{% endfor %}
+</ul>
+
+<p>Przejdź do innej lokacji:</p>
+{% for lok in lokacje.keys() %}
+<form method="post" style="display:inline">
+    <button name="akcja" value="idź:{{ lok }}">Spacer do {{ lok }}</button>
+</form>
+<form method="post" style="display:inline">
+    <button name="akcja" value="idź:{{ lok }}:szybko">Bieg do {{ lok }}</button>
+</form>
+{% endfor %}

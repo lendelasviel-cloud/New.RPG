@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Statystyki postaci</h2>
+
+<ul>
+    {% for k, v in attributes.items() %}
+        <li><b>{{ k }}:</b> {{ v }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

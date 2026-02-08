@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Walka</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/walka.css') }}">
+</head>
+<body>
+<body style="
+    background-image: url('/static/img/backgrounds/{{ tlo_walki }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+">
+
+    <div class="battle-screen">
+        <!-- Komunikat -->
+        {% if komunikat %}
+            <div class="komunikat">{{ komunikat }}</div>
+        {% endif %}
+
+        <!-- HUD gracza -->
+        {% if gracz %}
+        <div class="hud">
+            <h2>Gracz</h2>
+            <p>HP: {{ gracz.hp }} / {{ hp_max }}</p>
+            <div class="bar">
+                <div class="bar-fill hp" style="width: {{ (gracz.hp / hp_max) * 100 }}%"></div>
+            </div>
+
+            <p>Energia: {{ energia }} / {{ energia_max }}</p>
+            <div class="bar">
+                <div class="bar-fill energia" style="width: {{ (energia / energia_max) * 100 }}%"></div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Wróg -->
+        {% if potwor %}
+        <div class="enemy">
+            <h2>{{ potwor.nazwa }}</h2>
+            <img src="{{ url_for('static', filename='img/enemies/' + potwor.nazwa|lower + '.png') }}"
+                 alt="{{ potwor.nazwa }}" width="250">
+            <p>HP: {{ potwor.hp }}</p>
+            <div class="bar">
+                <div class="bar-fill hp" style="width: {{ (potwor.hp / potwor.hp_max) * 100 if potwor.hp_max else 100 }}%"></div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Panel akcji -->
+        {% if gracz and potwor %}
+        <div class="panel">
+            <form action="{{ url_for('atak') }}" method="post">
+                <button type="submit">⚔️ Atak</button>
+            </form>
+            <button disabled>🛡️ Obrona</button>
+            <button disabled>🔥 Umiejętność</button>
+            <a href="{{ url_for('gra', zakladka='odpoczynek') }}">🏃‍♂️ Ucieczka</a>
+        </div>
+        {% endif %}
+
+        <!-- Log walki -->
+        <div class="panel">
+            <h3>Przebieg walki</h3>
+            {% for wpis in session.log_walki %}
+                <p>{{ wpis }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

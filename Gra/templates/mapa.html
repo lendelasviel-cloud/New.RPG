@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>🗺️ Mapa świata</h2>
+
+<p><b>Aktualna lokalizacja:</b> {{ lokalizacja }}</p>
+<p>{{ mapa[ lokalizacja ].opis }}</p>
+
+<h3>Możliwe drogi:</h3>
+
+<ul>
+{% for cel, czas in mapa[lokalizacja].sąsiedzi.items() %}
+    <li>
+        {{ cel }} – {{ czas }}h
+        <a href="{{ url_for('move', cel=cel) }}">➡ Idź</a>
+    </li>
+{% endfor %}
+{% if komunikat %}
+<div class="alert">{{ komunikat }}</div>
+{% endif %}
+
+</ul>
+
+<p>
+⏰ Dzień {{ dzien }}, godzina {{ godzina }}:00
+</p>
+
+{% endblock %}
